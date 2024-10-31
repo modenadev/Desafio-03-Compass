@@ -27,12 +27,8 @@ public class SecurityConfiguration {
             "/api/users/register",
             "/api/users/login",
             "/address/consult",
-            "/api-docs/**",
-            "/swagger-ui.html**",
-            "/api/users/solicit-notify"
+            "/send-notification"
     };
-
-
 
     public static final String[] ENDPOINTS_WITH_AUTHENTICATION_REQUIRED = {
             "/api/users/update-password",

@@ -7,6 +7,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 
 @EnableFeignClients(basePackages = "io.github.modenadev.userproject.repositories")
 @SpringBootApplication
+@EnableRabbit
 public class UserProjectApplication {
 
     public static void main(String[] args) {

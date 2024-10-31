@@ -3,14 +3,10 @@ package io.github.modenadev.userproject.services;
 
 import io.github.modenadev.userproject.data.vo.v1.LoginUserDto;
 import io.github.modenadev.userproject.data.vo.v1.RecoveryJwtTokenDto;
-import io.github.modenadev.userproject.exceptions.ErrorNotifyException;
 import io.github.modenadev.userproject.exceptions.InvalidUsernamePasswordException;
-import io.github.modenadev.userproject.infra.NotifySubscriber;
 import io.github.modenadev.userproject.jwt.security.authentication.JwtTokenService;
 import io.github.modenadev.userproject.jwt.security.authentication.userdetails.UserDetailsImpl;
 import io.github.modenadev.userproject.mapper.UserMapper;
-import io.github.modenadev.userproject.model.Notify;
-import io.github.modenadev.userproject.model.ProtocolSolicitNotify;
 import io.github.modenadev.userproject.model.User;
 import io.github.modenadev.userproject.model.dto.AddressResponse;
 import io.github.modenadev.userproject.model.dto.UserRequestDTO;
@@ -25,8 +21,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.UUID;
 
 @Service
 public class UserServices  {
@@ -48,13 +42,10 @@ public class UserServices  {
     @Autowired
     private ViaCepClient viaCepClient; //
 
-    private final NotifySubscriber subscriber;
-
-    public UserServices(UserRepository repository, UserMapper mapper, NotifySubscriber subscriber) {
+    public UserServices(UserRepository repository, UserMapper mapper) {
 
         this.repository = repository;
         this.userMapper = mapper;
-        this.subscriber = subscriber;
     }
 
     public RecoveryJwtTokenDto authenticateUser(LoginUserDto loginUserDto) {
@@ -121,16 +112,6 @@ public class UserServices  {
 
         // Salvar o usuário no repositório
         return repository.save(user);
-    }
-
-    public ProtocolSolicitNotify solicitNotify(Notify notify) {
-        try {
-            subscriber.solicitNotify(notify); // Use a instância injetada
-            var protocol = UUID.randomUUID().toString();
-            return new ProtocolSolicitNotify(protocol);
-        } catch (Exception e) {
-            throw new ErrorNotifyException(e.getMessage());
-        }
     }
 
 

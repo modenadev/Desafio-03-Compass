@@ -3,10 +3,7 @@ package io.github.modenadev.userproject.controllers;
 
 import io.github.modenadev.userproject.data.vo.v1.LoginUserDto;
 import io.github.modenadev.userproject.data.vo.v1.RecoveryJwtTokenDto;
-import io.github.modenadev.userproject.exceptions.ErrorNotifyException;
 import io.github.modenadev.userproject.exceptions.InvalidUsernamePasswordException;
-import io.github.modenadev.userproject.model.Notify;
-import io.github.modenadev.userproject.model.ProtocolSolicitNotify;
 import io.github.modenadev.userproject.model.User;
 import io.github.modenadev.userproject.model.dto.UserRequestDTO;
 import io.github.modenadev.userproject.model.dto.UserResponseDTO;
@@ -48,17 +45,5 @@ public class UserController {
     @GetMapping("/test")
     public ResponseEntity<String> getAuthenticationTest() {
         return new ResponseEntity<>("Authenticated succesfuly", HttpStatus.OK);
-    }
-
-
-    @PostMapping("solicit-notify")
-    public ResponseEntity solicitNotify(@RequestBody Notify notify){
-        try {
-            ProtocolSolicitNotify protocolSolicitNotify = userService.solicitNotify(notify);
-            return ResponseEntity.ok(protocolSolicitNotify);
-        }
-        catch (ErrorNotifyException e){
-            return ResponseEntity.internalServerError().body(e.getMessage());
-        }
     }
 }
