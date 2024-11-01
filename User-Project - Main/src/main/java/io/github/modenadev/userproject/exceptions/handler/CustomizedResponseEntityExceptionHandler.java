@@ -4,7 +4,6 @@ package io.github.modenadev.userproject.exceptions.handler;
 import io.github.modenadev.userproject.exceptions.ExceptionResponse;
 import io.github.modenadev.userproject.exceptions.InvalidJwtAuthenticationException;
 import io.github.modenadev.userproject.exceptions.InvalidUsernamePasswordException;
-import org.apache.kafka.common.errors.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -30,7 +29,7 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
 		
 		return new ResponseEntity<>(exceptionResponse, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
-	
+
 	
 
 	
