@@ -30,35 +30,43 @@ public class UserAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        // Verifica se o endpoint requer autenticação antes de processar a requisição
-        if (checkIfEndpointIsNotPublic(request)) {
-            String token = recoveryToken(request); // Recupera o token do cabeçalho Authorization
-            if (token != null) {
-                String subject = jwtTokenService.getSubjectFromToken(token);
-                User user = userRepository.findByUsername(subject)
-                        .orElseThrow(() -> new UsernameNotFoundException("User not found: " + subject));
+        try {
+            // Verifica se o endpoint requer autenticação
+            if (checkIfEndpointIsNotPublic(request)) {
+                String token = recoveryToken(request); // Recupera o token do cabeçalho Authorization
+                if (token != null) {
+                    String subject = jwtTokenService.getSubjectFromToken(token);
+                    User user = userRepository.findByUsername(subject)
+                            .orElseThrow(() -> new UsernameNotFoundException("User not found: " + subject));
 
-                UserDetailsImpl userDetails = new UserDetailsImpl(user);
+                    UserDetailsImpl userDetails = new UserDetailsImpl(user);
 
-                Authentication authentication =
-                        new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-
-                SecurityContextHolder.getContext().setAuthentication(authentication);
-            } else {
-                throw new RuntimeException("The token is ausent.");
+                    Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
+                } else {
+                    response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Token is absent");
+                    return; // Encerrar o processamento se não houver token
+                }
             }
+            filterChain.doFilter(request, response);
+        } catch (UsernameNotFoundException e) {
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, e.getMessage());
+        } catch (Exception e) {
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "An error occurred: " + e.getMessage());
         }
-        filterChain.doFilter(request, response);
     }
 
-    // Recupera o token do cabeçalho Authorization da requisição
+
+
     private String recoveryToken(HttpServletRequest request) {
         String authorizationHeader = request.getHeader("Authorization");
-        if (authorizationHeader != null) {
+        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
             return authorizationHeader.replace("Bearer ", "");
         }
-        return null;
+        return null; // Retorna null se não houver um token válido
     }
+
+
 
     // Verifica se o endpoint requer autenticação antes de processar a requisição
     private boolean checkIfEndpointIsNotPublic(HttpServletRequest request) {

@@ -1,3 +1,10 @@
+springdoc:
+  pathsToMatch:
+    - /auth/**
+    - /api/**/v1/**
+  swagger-ui:
+    use-root-path: true
+
 spring:
   application:
     name: user-service
@@ -35,3 +42,4 @@ jwt:
 logging:
   level:
     io.github.modenadev.userproject.repositories.ViaCepClient: DEBUG
+

@@ -27,8 +27,11 @@ public class SecurityConfiguration {
             "/api/users/register",
             "/api/users/login",
             "/address/consult",
+            "/v3/api-docs/**", // Permitir acesso ao Swagger docs
+            "/swagger-ui/**",
             "/api-docs/**",
-            "/swagger-ui.html**",
+            "/swagger-ui/index.html",
+            "/swagger-ui/index.html#",
             "/api/users/solicit-notify"
     };
 
@@ -53,6 +56,7 @@ public class SecurityConfiguration {
 
         return http.build();
     }
+
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
