@@ -86,6 +86,9 @@ Implementações:
 
 Valida a senha antiga e atualiza para a nova senha caso a validação seja bem-sucedida.
 
+OBS: A oldPassword tem que ser a senha criptografada, se não vai der erro.
+
+
 Segurança com JWT
 
 A API utiliza Spring Security para autenticação e autorização através de tokens JWT.
