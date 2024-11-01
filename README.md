@@ -1,5 +1,7 @@
-Desafio-03: API de Usuários com Spring Boot
-Introdução
+# Desafio-03: API de Usuários com Spring Boot
+
+# Introdução
+
 Este projeto consiste em uma API desenvolvida com Spring Boot que permite o registro de usuários e a atualização de senhas, implementando segurança com JWT e um sistema de mensageria utilizando Kafka. Além disso, a API integra-se à ViaCEP para buscar endereços a partir de CEPs fornecidos durante o cadastro.
 
 Funcionalidades
