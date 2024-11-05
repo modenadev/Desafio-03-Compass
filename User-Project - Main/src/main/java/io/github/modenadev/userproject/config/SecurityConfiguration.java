@@ -27,7 +27,7 @@ public class SecurityConfiguration {
             "/api/users/register",
             "/api/users/login",
             "/address/consult",
-            "/v3/api-docs/**", // Permitir acesso ao Swagger docs
+            "/v3/api-docs/**",
             "/swagger-ui/**",
             "/api-docs/**",
             "/swagger-ui/index.html",

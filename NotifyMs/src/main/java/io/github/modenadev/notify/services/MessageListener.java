@@ -12,16 +12,16 @@ public class MessageListener {
 
     @RabbitListener(queues = "notify")
     public void listen(@Payload String message) {
-        System.out.println("Recivied message: " + message);
-
         try {
             var mapper = new ObjectMapper();
             Notify notify = mapper.readValue(message, Notify.class);
-            // Faça algo com o notify
-
+            // Aqui você pode processar a notificação
+            System.out.println("User created with username:  " + notify.getUsername());
         } catch (JsonProcessingException e) {
             System.err.println("Error processing JSON: " + e.getMessage());
             e.printStackTrace();
         }
     }
+
 }
+

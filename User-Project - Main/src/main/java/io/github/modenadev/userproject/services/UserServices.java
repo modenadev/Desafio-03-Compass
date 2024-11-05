@@ -58,17 +58,16 @@ public class UserServices  {
     }
 
     public RecoveryJwtTokenDto authenticateUser(LoginUserDto loginUserDto) {
-        // Cria um objeto de autenticação com o email e a senha do usuário
+
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
                 new UsernamePasswordAuthenticationToken(loginUserDto.username(), loginUserDto.password());
 
-        // Autentica o usuário com as credenciais fornecidas
+
         Authentication authentication = authenticationManager.authenticate(usernamePasswordAuthenticationToken);
 
-        // Obtém o objeto UserDetails do usuário autenticado
+
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
 
-        // Gera um token JWT para o usuário autenticado
         return new RecoveryJwtTokenDto(jwtTokenService.generateToken(userDetails));
     }
 
@@ -102,24 +101,22 @@ public class UserServices  {
     public User create(UserRequestDTO userVO) throws InvalidUsernamePasswordException {
         User user = userMapper.toEntity(userVO);
 
-        // Buscar o endereço usando o CEP
         AddressResponse address = viaCepClient.searchZipCode(user.getZipCode().toString());
         user.setAddress(address); // Certifique-se de que o método setAddress aceita AddressResponse
 
-        // Verificar se o usuário já existe
+
         if (repository.findByUsername(user.getUsername()).isPresent()) {
             throw new InvalidUsernamePasswordException("User already exists in database");
         }
 
-        // Verificar se o email já existe
         if (repository.findByEmail(user.getEmail()).isPresent()) {
             throw new InvalidUsernamePasswordException("Email already exists in database, please do login with your user");
         }
 
-        // Codificar a senha
+
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
-        // Salvar o usuário no repositório
+
         return repository.save(user);
     }
 

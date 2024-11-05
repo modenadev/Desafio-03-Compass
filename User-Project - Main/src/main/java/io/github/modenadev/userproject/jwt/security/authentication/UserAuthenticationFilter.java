@@ -31,9 +31,9 @@ public class UserAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         try {
-            // Verifica se o endpoint requer autenticação
+
             if (checkIfEndpointIsNotPublic(request)) {
-                String token = recoveryToken(request); // Recupera o token do cabeçalho Authorization
+                String token = recoveryToken(request);
                 if (token != null) {
                     String subject = jwtTokenService.getSubjectFromToken(token);
                     User user = userRepository.findByUsername(subject)
@@ -45,7 +45,7 @@ public class UserAuthenticationFilter extends OncePerRequestFilter {
                     SecurityContextHolder.getContext().setAuthentication(authentication);
                 } else {
                     response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Token is absent");
-                    return; // Encerrar o processamento se não houver token
+                    return;
                 }
             }
             filterChain.doFilter(request, response);
@@ -57,18 +57,15 @@ public class UserAuthenticationFilter extends OncePerRequestFilter {
     }
 
 
-
     private String recoveryToken(HttpServletRequest request) {
         String authorizationHeader = request.getHeader("Authorization");
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
             return authorizationHeader.replace("Bearer ", "");
         }
-        return null; // Retorna null se não houver um token válido
+        return null;
     }
 
 
-
-    // Verifica se o endpoint requer autenticação antes de processar a requisição
     private boolean checkIfEndpointIsNotPublic(HttpServletRequest request) {
         String requestURI = request.getRequestURI();
         return Arrays.stream(SecurityConfiguration.ENDPOINTS_WITH_AUTHENTICATION_NOT_REQUIRED)

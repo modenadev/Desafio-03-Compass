@@ -2,9 +2,6 @@ package io.github.modenadev.userproject.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Classe que representa a resposta de um endereço.
- */
 public class AddressResponse {
 
 
@@ -21,7 +18,6 @@ public class AddressResponse {
     private String state;
 
 
-    // Construtor com todos os campos
     public AddressResponse(String zipCode, String street, String neighborhood, String city, String state) {
         this.street = street;
         this.neighborhood = neighborhood;
@@ -29,10 +25,8 @@ public class AddressResponse {
         this.state = state;
     }
 
-    // Construtor padrão
     public AddressResponse() {}
 
-    // Getters e Setters
 
     public String getStreet() {
         return street;

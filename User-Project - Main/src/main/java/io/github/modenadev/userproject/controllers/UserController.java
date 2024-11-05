@@ -26,9 +26,20 @@ public class UserController {
 
     @PostMapping("/register")
     public ResponseEntity<User> register(@RequestBody UserRequestDTO userRequestDTO) throws InvalidUsernamePasswordException {
+
         User savedUser = userService.create(userRequestDTO);
-        return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
+
+        Notify notify = new Notify(savedUser.getUsername());
+
+        try {
+            ProtocolSolicitNotify protocolSolicitNotify = userService.solicitNotify(notify);
+            return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
+
+        } catch (ErrorNotifyException e) {
+            return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
+        }
     }
+
 
     @PutMapping("/update-password")
     public ResponseEntity<Void> updatePassword(@RequestBody UserRequestDTO request) throws BadRequestException {
