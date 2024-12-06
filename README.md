@@ -131,8 +131,12 @@ once that's done, open the Windows terminal and use the command
 
 cd C:\Users\yourusername\locationwherethefolderis\Desafio-03\User-Project - Main.
 
+you also need docker installed on your computer to run the docker-compose
+
+to install docker go to https://www.docker.com/products/docker-desktop/
+
 ## Docker
-Once that's done, just type docker-compose up and the application container will start running.
+Once this is done, simply type docker-compose up in the project root folder and the application container will start running.
 
 ## Dependencies
 
