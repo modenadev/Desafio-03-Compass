@@ -55,7 +55,7 @@ json
 
 "email": "string",
 
-"cep": "string"
+"zipCode": "string"
 
 }
 
